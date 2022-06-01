@@ -1,0 +1,24 @@
+name: RepositoryApp
+packages:
+  SwiftDI:
+    url: https://github.com/difomiry/SwiftDI
+    branch: main
+  Markdownosaur:
+    url: https://github.com/difomiry/Markdownosaur
+    branch: ios13
+targets:
+  App:
+    platform: iOS
+    type: application
+    deploymentTarget: 13.0
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.difomiry.RepositoryApp.App
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 1.0
+    dependencies:
+      - package: SwiftDI
+      - package: Markdownosaur
+    sources:
+      - path: Targets/App
+        createIntermediateGroups: true
