@@ -25,6 +25,3 @@ DerivedData
 # Cocoapods
 Pods/
 *.xcworkspace
-
-# Xcodegen
-*.xcodeproj
