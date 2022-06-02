@@ -4,6 +4,7 @@ import CoreData
 struct Repository {
 	let id: Int
 	let name: String
+	let language: String?
 	let description: String?
 	let owner: User
 	let forks: Int
@@ -16,6 +17,7 @@ extension Repository: Decodable {
 	enum CodingKeys: String, CodingKey {
 		case id
 		case name
+		case language
 		case description
 		case owner
 		case forks = "forks_count"
@@ -28,6 +30,7 @@ extension Repository: Storable {
 	init(object: NSManagedRepository) throws {
 		self.id = object.id
 		self.name = object.name
+		self.language = object.language
 		self.description = object.desc
 		self.owner = User(
 			id: object.owner.id,
@@ -46,6 +49,7 @@ extension Repository: Storable {
 		let object = NSManagedRepository(context: context)
 		object.id = id
 		object.name = name
+		object.language = language ?? ""
 		object.desc = description ?? ""
 		object.owner = try owner.make(with: context)
 		object.forks = forks

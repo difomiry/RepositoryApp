@@ -22,7 +22,9 @@ final class SearchRecentRepositoryListSectionController: ASListSectionController
 		return SearchRecentRepositoryCell(
 			configuration: SearchRecentRepositoryCellConfiguration(
 				name: object.repository.name,
-				ownerName: object.repository.owner.name
+				ownerName: object.repository.owner.name,
+				description: object.repository.description ?? "",
+				language: object.repository.language ?? ""
 			)
 		)
 	}

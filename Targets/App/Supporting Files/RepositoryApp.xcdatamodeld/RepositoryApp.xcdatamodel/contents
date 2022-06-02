@@ -4,6 +4,7 @@
         <attribute name="desc" optional="YES" attributeType="String"/>
         <attribute name="forks" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="language" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="readme" optional="YES" attributeType="String"/>
         <attribute name="stargazers" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -19,7 +20,7 @@
         <relationship name="repositories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Repository" inverseName="owner" inverseEntity="Repository"/>
     </entity>
     <elements>
-        <element name="Repository" positionX="-54" positionY="18" width="128" height="149"/>
+        <element name="Repository" positionX="-54" positionY="18" width="128" height="164"/>
         <element name="User" positionX="-63" positionY="-18" width="128" height="119"/>
     </elements>
 </model>

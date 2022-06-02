@@ -23,7 +23,9 @@ final class SearchFoundRepositoryListSectionController: ASListSectionController<
 			configuration: SearchFoundRepositoryCellConfiguration(
 				name: object.repository.name,
 				ownerName: object.repository.owner.name,
-				ownerAvatar: object.repository.owner.avatar
+				ownerAvatar: object.repository.owner.avatar,
+				description: object.repository.description ?? "",
+				language: object.repository.language ?? ""
 			)
 		)
 	}

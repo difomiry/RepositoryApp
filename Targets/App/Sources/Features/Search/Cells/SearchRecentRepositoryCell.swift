@@ -5,33 +5,73 @@ import UIKit
 struct SearchRecentRepositoryCellConfiguration {
 	let name: String
 	let ownerName: String
+	let description: String
+	let language: String
 }
 
 final class SearchRecentRepositoryCell: ASCellNode {
-	private lazy var ownerName: ASTextNode = {
+	private lazy var name: ASTextNode = {
 		return ASTextNode()
 	}()
 
-	private lazy var name: ASTextNode = {
+	private lazy var desc: ASTextNode = {
+		return ASTextNode()
+	}()
+
+	private lazy var language: ASTextNode = {
 		return ASTextNode()
 	}()
 
 	init(configuration: SearchRecentRepositoryCellConfiguration) {
 		super.init()
-		ownerName.attributedText = NSAttributedString(
-			string: configuration.ownerName,
-			attributes: [
-				.font: UIFont.systemFont(ofSize: 15)
-			]
+		let nameAttributedString = NSMutableAttributedString()
+		nameAttributedString.append(
+			NSAttributedString(
+				string: configuration.ownerName,
+				attributes: [
+					.font: UIFont.systemFont(ofSize: 15)
+				]
+			)
 		)
-		name.attributedText = NSAttributedString(
-			string: configuration.name,
-			attributes: [
-				.font: UIFont.boldSystemFont(ofSize: 15)
-			]
+		nameAttributedString.append(
+			NSAttributedString(
+				string: "/",
+				attributes: [
+					.font: UIFont.systemFont(ofSize: 15)
+				]
+			)
 		)
-		addSubnode(ownerName)
+		nameAttributedString.append(
+			NSAttributedString(
+				string: configuration.name,
+				attributes: [
+					.font: UIFont.boldSystemFont(ofSize: 15)
+				]
+			)
+		)
+		name.attributedText = nameAttributedString
 		addSubnode(name)
+
+		if !configuration.description.isEmpty {
+			desc.attributedText = NSAttributedString(
+				string: configuration.description,
+				attributes: [
+					.font: UIFont.systemFont(ofSize: 15)
+				]
+			)
+			addSubnode(desc)
+		}
+
+		if !configuration.language.isEmpty {
+			language.attributedText = NSAttributedString(
+				string: configuration.language,
+				attributes: [
+					.font: UIFont.systemFont(ofSize: 13),
+					.foregroundColor: UIColor.gray
+				]
+			)
+			addSubnode(language)
+		}
 	}
 
 	override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -41,9 +81,10 @@ final class SearchRecentRepositoryCell: ASCellNode {
 			justifyContent: .start,
 			alignItems: .start,
 			children: [
-				ownerName,
-				name
-			]
+				name,
+				subnodes?.contains(desc) == true ? desc : nil,
+				subnodes?.contains(language) == true ? language : nil
+			].compactMap { $0 }
 		)
 		stack.style.width = ASDimension(unit: .points, value: constrainedSize.max.width - 16)
 		return ASInsetLayoutSpec(

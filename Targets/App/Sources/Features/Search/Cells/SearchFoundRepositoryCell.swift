@@ -6,6 +6,8 @@ struct SearchFoundRepositoryCellConfiguration {
 	let name: String
 	let ownerName: String
 	let ownerAvatar: String
+	let description: String
+	let language: String
 }
 
 final class SearchFoundRepositoryCell: ASCellNode {
@@ -13,32 +15,71 @@ final class SearchFoundRepositoryCell: ASCellNode {
 		return ASNetworkImageNode()
 	}()
 
-	private lazy var ownerName: ASTextNode = {
+	private lazy var name: ASTextNode = {
 		return ASTextNode()
 	}()
 
-	private lazy var name: ASTextNode = {
+	private lazy var desc: ASTextNode = {
+		return ASTextNode()
+	}()
+
+	private lazy var language: ASTextNode = {
 		return ASTextNode()
 	}()
 
 	init(configuration: SearchFoundRepositoryCellConfiguration) {
 		super.init()
 		ownerAvatar.setURL(URL(string: configuration.ownerAvatar), resetToDefault: true)
-		ownerName.attributedText = NSAttributedString(
-			string: configuration.ownerName,
-			attributes: [
-				.font: UIFont.systemFont(ofSize: 15)
-			]
-		)
-		name.attributedText = NSAttributedString(
-			string: configuration.name,
-			attributes: [
-				.font: UIFont.boldSystemFont(ofSize: 15)
-			]
-		)
 		addSubnode(ownerAvatar)
-		addSubnode(ownerName)
+
+		let nameAttributedString = NSMutableAttributedString()
+		nameAttributedString.append(
+			NSAttributedString(
+				string: configuration.ownerName,
+				attributes: [
+					.font: UIFont.systemFont(ofSize: 15)
+				]
+			)
+		)
+		nameAttributedString.append(
+			NSAttributedString(
+				string: "/",
+				attributes: [
+					.font: UIFont.systemFont(ofSize: 15)
+				]
+			)
+		)
+		nameAttributedString.append(
+			NSAttributedString(
+				string: configuration.name,
+				attributes: [
+					.font: UIFont.boldSystemFont(ofSize: 15)
+				]
+			)
+		)
+		name.attributedText = nameAttributedString
 		addSubnode(name)
+
+		if !configuration.description.isEmpty {
+			desc.attributedText = NSAttributedString(
+				string: configuration.description,
+				attributes: [
+					.font: UIFont.systemFont(ofSize: 15)
+				]
+			)
+			addSubnode(desc)
+		}
+
+		if !configuration.language.isEmpty {
+			language.attributedText = NSAttributedString(
+				string: configuration.language,
+				attributes: [
+					.font: UIFont.systemFont(ofSize: 13),
+					.foregroundColor: UIColor.gray
+				]
+			)
+			addSubnode(language)
+		}
 	}
 
 	override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -52,16 +93,17 @@ final class SearchFoundRepositoryCell: ASCellNode {
 			justifyContent: .start,
 			alignItems: .start,
 			children: [
-				ownerName,
-				name
-			]
+				name,
+				subnodes?.contains(desc) == true ? desc : nil,
+				subnodes?.contains(language) == true ? language : nil
+			].compactMap { $0 }
 		)
 		textStack.style.width = ASDimension(unit: .points, value: constrainedSize.max.width - 72)
 		let stack = ASStackLayoutSpec(
 			direction: .horizontal,
 			spacing: 8,
 			justifyContent: .center,
-			alignItems: .center,
+			alignItems: .start,
 			children: [
 				ownerAvatar,
 				textStack

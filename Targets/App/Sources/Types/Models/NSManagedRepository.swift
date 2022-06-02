@@ -4,6 +4,7 @@ import CoreData
 public class NSManagedRepository: NSManagedObject {
 	@NSManaged public var id: Int
 	@NSManaged public var name: String
+	@NSManaged public var language: String
 	@NSManaged public var desc: String
 	@NSManaged public var owner: NSManagedUser
 	@NSManaged public var forks: Int
