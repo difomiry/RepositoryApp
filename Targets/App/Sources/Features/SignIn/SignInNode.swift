@@ -8,10 +8,12 @@ protocol SignInView: ASWebAuthenticationPresentationContextProviding {
 final class SignInNode: ASDisplayNode {
 	private lazy var signInButton: ASButtonNode = {
 		let node = ASButtonNode()
+		node.cornerRadius = 8
+		node.backgroundColor = .systemBlue
 		node.setTitle(
 			"Sign In",
 			with: .systemFont(ofSize: 20),
-			with: .label,
+			with: .white,
 			for: .normal
 		)
 		node.addTarget(
@@ -24,10 +26,12 @@ final class SignInNode: ASDisplayNode {
 
 	private lazy var skipButtonButton: ASButtonNode = {
 		let node = ASButtonNode()
+		node.cornerRadius = 8
+		node.backgroundColor = .systemGray
 		node.setTitle(
 			"Skip",
 			with: .systemFont(ofSize: 20),
-			with: .label,
+			with: .white,
 			for: .normal
 		)
 		node.addTarget(
@@ -64,7 +68,7 @@ final class SignInNode: ASDisplayNode {
 		)
 		let stackSpec = ASStackLayoutSpec(
 			direction: .vertical,
-			spacing: 10,
+			spacing: 8,
 			justifyContent: .center,
 			alignItems: .center,
 			children: [
@@ -72,8 +76,20 @@ final class SignInNode: ASDisplayNode {
 				skipButtonButton
 			]
 		)
-		return ASCenterLayoutSpec(
+		let spec = ASRelativeLayoutSpec(
+			horizontalPosition: .center,
+			verticalPosition: .end,
+			sizingOption: .minimumHeight,
 			child: stackSpec
+		)
+		return ASInsetLayoutSpec(
+			insets: .init(
+				top: 8,
+				left: 8,
+				bottom: 8 + safeAreaInsets.bottom,
+				right: 8
+			),
+			child: spec
 		)
 	}
 
