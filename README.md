@@ -1,5 +1,7 @@
+To install:
+
 ```
-pod install
+make install
 ```
 
 To enable authorization you should fill secrets in `Info.plist`:
