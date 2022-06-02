@@ -15,11 +15,12 @@ final class SearchViewController: ASDKViewController<ASCollectionNode>, SearchVi
 		super.init(node: ASCollectionNode(collectionViewLayout: UICollectionViewFlowLayout()))
 		navigationItem.titleView = searchBar
 		searchBar.delegate = self
-		node.view.keyboardDismissMode = .onDrag
+		node.view.keyboardDismissMode = .interactive
 		node.delegate = self
 		adapter.setASDKCollectionNode(node)
 		adapter.dataSource = self
 		node.backgroundColor = .white
+		setupKeyboardTracking()
 	}
 
 	@available(*, unavailable, message: "init(coder:) has not been implemented")
@@ -34,6 +35,26 @@ final class SearchViewController: ASDKViewController<ASCollectionNode>, SearchVi
 
 	func reloadData() {
 		adapter.performUpdates(animated: true)
+	}
+
+	private func setupKeyboardTracking() {
+		NotificationCenter.default.addObserver(
+			forName: UIResponder.keyboardWillShowNotification,
+			object: nil,
+			queue: nil
+		) { [weak self] notification in
+			guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+			let keyboardHeight = keyboardFrame.cgRectValue.height
+			self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
+		}
+
+		NotificationCenter.default.addObserver(
+			forName: UIResponder.keyboardWillHideNotification,
+			object: nil,
+			queue: nil
+		) { [weak self] _ in
+			self?.additionalSafeAreaInsets = .zero
+		}
 	}
 }
 
