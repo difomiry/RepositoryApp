@@ -74,7 +74,7 @@ private extension RepositoryPresenterImpl {
 		values.append(.field(name: "Name", value: repository.name))
 		values.append(.field(name: "Owner", value: repository.owner.name))
 
-		if let description = repository.description {
+		if let description = repository.description, !description.isEmpty {
 			values.append(.text(name: "Description", text: description))
 		}
 
