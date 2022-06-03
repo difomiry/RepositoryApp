@@ -5,17 +5,9 @@ protocol SearchPresenterDelegate: AnyObject {
 	func didTap(repository: Repository)
 }
 
-enum SearchViewState {
-	case idle
-	case loading([Repository])
-	case found([Repository])
-	case recent([Repository])
-	case failed(Error)
-}
-
 protocol SearchPresenter: AnyObject {
 	var view: SearchView? { get set }
-	var viewState: SearchViewState { get }
+	var viewModel: SearchViewModel { get }
 	var isIncomplete: Bool { get }
 	func viewDidLoad()
 	func didChange(query: String)
@@ -35,7 +27,7 @@ final class SearchPresenterImpl {
 	private var task: Task<Void, Error>?
 	private var page = 1
 	private(set) var isIncomplete = false
-	private(set) var viewState = SearchViewState.idle {
+	private(set) var viewModel = SearchViewModel.idle {
 		didSet {
 			Task { @MainActor in
 				self.view?.reloadData()
@@ -72,28 +64,28 @@ extension SearchPresenterImpl: SearchPresenter {
 
 	func didReachEnd() {
 		guard
-			case let .found(repositories) = viewState,
+			case let .found(repositories) = viewModel,
 			!isIncomplete,
 			let lastQuery = lastQuery
 		else { return }
 		page += 1
-		viewState = .loading(repositories)
+		viewModel = .loading(repositories)
 		task?.cancel()
 		task = Task {
 			do {
 				let response = try await searchService.search(query: lastQuery, page: page)
 				Task { @MainActor in
 					self.isIncomplete = response.isIncomplete
-					if case let .loading(repositories) = self.viewState {
-						self.viewState = .found(repositories + response.items)
+					if case let .loading(repositories) = self.viewModel {
+						self.viewModel = .found(repositories + response.items)
 					} else {
-						self.viewState = .found(response.items)
+						self.viewModel = .found(response.items)
 					}
 				}
 			} catch {
 				if (error as NSError).code == -999 { return }
 				Task { @MainActor in
-					self.viewState = .failed(error)
+					self.viewModel = .failed(error)
 				}
 			}
 		}
@@ -108,19 +100,19 @@ private extension SearchPresenterImpl {
 		guard !query.isEmpty else {
 			return fetchRecent()
 		}
-		viewState = .loading([])
+		viewModel = .loading([])
 		task?.cancel()
 		task = Task {
 			do {
 				let response = try await searchService.search(query: query, page: page)
 				Task { @MainActor in
 					self.isIncomplete = response.isIncomplete
-					self.viewState = .found(response.items)
+					self.viewModel = .found(response.items)
 				}
 			} catch {
 				if (error as NSError).code == -999 { return }
 				Task { @MainActor in
-					self.viewState = .failed(error)
+					self.viewModel = .failed(error)
 				}
 			}
 		}
@@ -132,7 +124,7 @@ private extension SearchPresenterImpl {
 			do {
 				let repositories = try await searchService.recent()
 				Task { @MainActor in
-					self.viewState = .recent(repositories.reversed())
+					self.viewModel = .recent(repositories.reversed())
 				}
 			} catch {
 				// do nothing

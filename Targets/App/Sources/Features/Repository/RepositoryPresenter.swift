@@ -2,20 +2,9 @@ import Foundation
 import Markdown
 import Markdownosaur
 
-enum RepositoryViewState {
-	enum Value {
-		case field(name: String, value: String)
-		case text(name: String, text: String)
-		case markdown(name: String, text: NSAttributedString)
-	}
-
-	case idle
-	case values([Value])
-}
-
 protocol RepositoryPresenter: AnyObject {
 	var view: RepositoryView? { get set }
-	var viewState: RepositoryViewState { get }
+	var viewModel: RepositoryViewModel { get }
 	func viewDidLoad()
 }
 
@@ -25,7 +14,7 @@ final class RepositoryPresenterImpl {
 
 	weak var view: RepositoryView?
 
-	private(set) var viewState = RepositoryViewState.idle {
+	private(set) var viewModel = RepositoryViewModel(items: []) {
 		didSet {
 			view?.reloadData()
 		}
@@ -42,7 +31,7 @@ final class RepositoryPresenterImpl {
 
 extension RepositoryPresenterImpl: RepositoryPresenter {
 	func viewDidLoad() {
-		viewState = build()
+		viewModel = build()
 		Task {
 			do {
 				guard let readme = repository.readme, !readme.isEmpty else {
@@ -53,12 +42,12 @@ extension RepositoryPresenterImpl: RepositoryPresenter {
 					repository.readme = readme
 					try await repositoryService.save(repository: repository)
 					Task { @MainActor in
-						self.viewState = build(with: readme)
+						self.viewModel = build(with: readme)
 					}
 					return
 				}
 				Task { @MainActor in
-					self.viewState = build(with: readme)
+					self.viewModel = build(with: readme)
 				}
 			} catch {
 				try await repositoryService.save(repository: repository)
@@ -68,27 +57,27 @@ extension RepositoryPresenterImpl: RepositoryPresenter {
 }
 
 private extension RepositoryPresenterImpl {
-	func build(with readme: String? = nil) -> RepositoryViewState {
-		var values = [RepositoryViewState.Value]()
+	func build(with readme: String? = nil) -> RepositoryViewModel {
+		var items = [RepositoryViewModel.Item]()
 
-		values.append(.field(name: "Name", value: repository.name))
-		values.append(.field(name: "Owner", value: repository.owner.name))
+		items.append(.field(name: "Name", value: repository.name))
+		items.append(.field(name: "Owner", value: repository.owner.name))
 
 		if let description = repository.description, !description.isEmpty {
-			values.append(.text(name: "Description", text: description))
+			items.append(.text(name: "Description", text: description))
 		}
 
-		values.append(.field(name: "Forks", value: "\(repository.forks)"))
-		values.append(.field(name: "Stargazers", value: "\(repository.stargazers)"))
-		values.append(.field(name: "Watchers", value: "\(repository.watchers)"))
+		items.append(.field(name: "Forks", value: "\(repository.forks)"))
+		items.append(.field(name: "Stargazers", value: "\(repository.stargazers)"))
+		items.append(.field(name: "Watchers", value: "\(repository.watchers)"))
 
 		if let readme = readme {
 			let document = Document(parsing: readme)
 			var markdownosaur = Markdownosaur()
 			let attributedString = markdownosaur.attributedString(from: document)
-			values.append(.markdown(name: "README", text: attributedString))
+			items.append(.markdown(name: "README", text: attributedString))
 		}
 
-		return .values(values)
+		return RepositoryViewModel(items: items)
 	}
 }

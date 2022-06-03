@@ -86,7 +86,7 @@ extension SearchViewController: UISearchBarDelegate {
 
 extension SearchViewController: ListAdapterDataSource {
 	func objects(for _: ListAdapter) -> [ListDiffable] {
-		switch presenter.viewState {
+		switch presenter.viewModel {
 		case .idle, .failed:
 				return []
 		case let .loading(repositories):
@@ -110,7 +110,7 @@ extension SearchViewController: ListAdapterDataSource {
 	}
 
 	func emptyView(for _: ListAdapter) -> UIView? {
-		switch presenter.viewState {
+		switch presenter.viewModel {
 		case .idle:
 			return nil
 		case .loading:

@@ -35,24 +35,19 @@ final class RepositoryViewController: ASDKViewController<ASCollectionNode>, Repo
 
 extension RepositoryViewController: ListAdapterDataSource {
 	func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-		switch presenter.viewState {
-		case .idle:
-			return []
-		case let .values(values):
-			return values.map { value in
-				switch value {
-				case let .field(name, value):
-					return RepositoryFieldDiffable(name: name, value: value) as ListDiffable
-				case let .text(name, text):
-					return RepositoryTextDiffable(name: name, text: text) as ListDiffable
-				case let .markdown(name, text):
-					return RepositoryMarkdownDiffable(name: name, text: text) as ListDiffable
-				}
+		presenter.viewModel.items.map { item in
+			switch item {
+			case let .field(name, value):
+				return RepositoryFieldDiffable(name: name, value: value) as ListDiffable
+			case let .text(name, text):
+				return RepositoryTextDiffable(name: name, text: text) as ListDiffable
+			case let .markdown(name, text):
+				return RepositoryMarkdownDiffable(name: name, text: text) as ListDiffable
 			}
 		}
 	}
 
-	func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
+	func listAdapter(_: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
 		switch object {
 		case is RepositoryFieldDiffable:
 			return RepositoryFieldListSectionController(delegate: self)
@@ -65,7 +60,7 @@ extension RepositoryViewController: ListAdapterDataSource {
 		}
 	}
 
-	func emptyView(for listAdapter: ListAdapter) -> UIView? {
+	func emptyView(for _: ListAdapter) -> UIView? {
 		return nil
 	}
 }
