@@ -3,7 +3,6 @@ import Foundation
 
 protocol SearchPresenterDelegate: AnyObject {
 	func didTap(repository: Repository)
-	func didFinishSearch()
 }
 
 enum SearchViewState {
@@ -18,18 +17,14 @@ protocol SearchPresenter: AnyObject {
 	var view: SearchView? { get set }
 	var viewState: SearchViewState { get }
 	var isIncomplete: Bool { get }
-	var isAuthenticated: Bool { get }
 	func viewDidLoad()
 	func didChange(query: String)
 	func didSelect(repository: Repository)
 	func didReachEnd()
-	func didTapSignIn()
-	func didTapSignOut()
 }
 
 final class SearchPresenterImpl {
 	private let searchService: SearchService
-	private let credentialsManager: CredentialsManager
 
 	weak var delegate: SearchPresenterDelegate?
 	weak var view: SearchView?
@@ -50,18 +45,14 @@ final class SearchPresenterImpl {
 
 	init(
 		delegate: SearchPresenterDelegate,
-		searchService: SearchService,
-		credentialsManager: CredentialsManager
+		searchService: SearchService
 	) {
 		self.delegate = delegate
 		self.searchService = searchService
-		self.credentialsManager = credentialsManager
 	}
 }
 
 extension SearchPresenterImpl: SearchPresenter {
-	var isAuthenticated: Bool { credentialsManager.credentials.token != nil }
-
 	func didChange(query: String) {
 		self.query.send(query)
 	}
@@ -106,15 +97,6 @@ extension SearchPresenterImpl: SearchPresenter {
 				}
 			}
 		}
-	}
-
-	func didTapSignIn() {
-		delegate?.didFinishSearch()
-	}
-
-	func didTapSignOut() {
-		credentialsManager.credentials.token = nil
-		delegate?.didFinishSearch()
 	}
 }
 

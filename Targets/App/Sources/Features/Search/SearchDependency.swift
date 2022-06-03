@@ -12,8 +12,7 @@ func makeSearchViewController(
 		searchService: SearchServiceImpl(
 			apiManager: context.apiManager,
 			storageManager: context.storageManager
-		),
-		credentialsManager: context.credentialsManager
+		)
 	)
 	let viewController = SearchViewController(presenter: presenter)
 	presenter.view = viewController

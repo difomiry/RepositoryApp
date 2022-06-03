@@ -13,6 +13,7 @@ final class SearchViewController: ASDKViewController<ASCollectionNode>, SearchVi
 	init(presenter: SearchPresenter) {
 		self.presenter = presenter
 		super.init(node: ASCollectionNode(collectionViewLayout: UICollectionViewFlowLayout()))
+		title = "Search"
 		navigationItem.titleView = searchBar
 		searchBar.delegate = self
 		node.view.keyboardDismissMode = .interactive
@@ -85,35 +86,20 @@ extension SearchViewController: UISearchBarDelegate {
 
 extension SearchViewController: ListAdapterDataSource {
 	func objects(for _: ListAdapter) -> [ListDiffable] {
-		var objects = [ListDiffable]()
-		if presenter.isAuthenticated {
-			objects.append(SearchSignInOrSignOutDiffable(kind: .signOut))
-		} else {
-			objects.append(SearchSignInOrSignOutDiffable(kind: .signIn))
-		}
 		switch presenter.viewState {
-		case .idle:
-				break
-		case .failed:
-			return []
+		case .idle, .failed:
+				return []
 		case let .loading(repositories):
-			guard repositories.isEmpty else {
-				objects.append(contentsOf: repositories.map(SearchFoundRepositoryDiffable.init))
-				break
-			}
-			return []
+				return repositories.map(SearchFoundRepositoryDiffable.init)
 		case let .found(repositories):
-			objects.append(contentsOf: repositories.map(SearchFoundRepositoryDiffable.init))
+			return repositories.map(SearchFoundRepositoryDiffable.init)
 		case let .recent(repositories):
-			objects.append(contentsOf: repositories.map(SearchRecentRepositoryDiffable.init))
+			return repositories.map(SearchRecentRepositoryDiffable.init)
 		}
-		return objects
 	}
 
 	func listAdapter(_: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
 		switch object {
-		case is SearchSignInOrSignOutDiffable:
-			return SearchSignInOrSignOutListSectionController(delegate: self)
 		case is SearchFoundRepositoryDiffable:
 			return SearchFoundRepositoryListSectionController(delegate: self)
 		case is SearchRecentRepositoryDiffable:
@@ -156,15 +142,5 @@ extension SearchViewController: ListAdapterDataSource {
 extension SearchViewController: SearchFoundRepositoryListSectionControllerDelegate, SearchRecentRepositoryListSectionControllerDelegate {
 	func didSelect(repository: Repository) {
 		presenter.didSelect(repository: repository)
-	}
-}
-
-extension SearchViewController: SearchSignInOrSignOutListSectionControllerDelegate {
-	func didTapSignIn() {
-		presenter.didTapSignIn()
-	}
-
-	func didTapSignOut() {
-		presenter.didTapSignOut()
 	}
 }
