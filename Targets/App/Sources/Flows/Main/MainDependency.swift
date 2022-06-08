@@ -9,10 +9,12 @@ func makeMainCoordinator(
 	delegate: MainCoordinatorDelegate
 ) -> Scope<MainDependency, MainCoordinator> {
 	let searchViewControllerFactory = context.make(makeSearchViewController)
+	let profileViewControllerFactory = context.make(makeProfileViewController)
 	let repositoryViewControllerFactory = context.make(makeRepositoryViewController)
 	let coordinator = MainCoordinatorImpl(
 		window: context.window,
 		searchViewControllerFactory: searchViewControllerFactory,
+		profileViewControllerFactory: profileViewControllerFactory,
 		repositoryViewControllerFactory: repositoryViewControllerFactory
 	)
 	coordinator.delegate = delegate

@@ -39,6 +39,10 @@ extension RepositoryServiceImpl: RepositoryService {
 	func save(repository: Repository) async throws {
 		try await storageManager.save(repository)
 	}
+
+	func clear() async throws {
+		try await storageManager.clear(type: Repository.self)
+	}
 }
 
 private struct ReadmeResponse: Decodable {
