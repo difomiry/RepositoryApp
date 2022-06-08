@@ -61,7 +61,7 @@ extension RepositoryViewController: ListAdapterDataSource {
 	}
 
 	func emptyView(for _: ListAdapter) -> UIView? {
-		return nil
+		nil
 	}
 }
 

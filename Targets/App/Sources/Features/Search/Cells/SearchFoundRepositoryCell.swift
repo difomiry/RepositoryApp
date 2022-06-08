@@ -11,21 +11,13 @@ struct SearchFoundRepositoryCellConfiguration {
 }
 
 final class SearchFoundRepositoryCell: ASCellNode {
-	private lazy var ownerAvatar: ASNetworkImageNode = {
-		return ASNetworkImageNode()
-	}()
+	private lazy var ownerAvatar: ASNetworkImageNode = .init()
 
-	private lazy var name: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var name: ASTextNode = .init()
 
-	private lazy var desc: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var desc: ASTextNode = .init()
 
-	private lazy var language: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var language: ASTextNode = .init()
 
 	init(configuration: SearchFoundRepositoryCellConfiguration) {
 		super.init()

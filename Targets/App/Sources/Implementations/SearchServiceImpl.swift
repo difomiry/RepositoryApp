@@ -20,7 +20,7 @@ extension SearchServiceImpl: SearchService {
 				path: "/search/repositories",
 				queryItems: [
 					URLQueryItem(name: "q", value: query),
-					URLQueryItem(name: "page", value: "\(page)"),
+					URLQueryItem(name: "page", value: "\(page)")
 				]
 			)
 		)

@@ -8,13 +8,9 @@ struct RepositoryMarkdownCellConfiguration {
 }
 
 final class RepositoryMarkdownCell: ASCellNode {
-	private lazy var name: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var name: ASTextNode = .init()
 
-	private lazy var text: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var text: ASTextNode = .init()
 
 	init(configuration: RepositoryMarkdownCellConfiguration) {
 		super.init()

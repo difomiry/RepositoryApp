@@ -26,7 +26,7 @@ class ASListSectionController<T>: ListSectionController, ASListSectionable {
 	// MARK: - ASSectionController
 
 	func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
-		return { [unowned self] in
+		{ [unowned self] in
 			self.nodeForItem(at: index)
 		}
 	}

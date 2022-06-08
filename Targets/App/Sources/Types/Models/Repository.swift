@@ -1,5 +1,5 @@
-import Foundation
 import CoreData
+import Foundation
 
 struct Repository {
 	let id: Int

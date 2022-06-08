@@ -88,9 +88,9 @@ extension SearchViewController: ListAdapterDataSource {
 	func objects(for _: ListAdapter) -> [ListDiffable] {
 		switch presenter.viewModel {
 		case .idle, .failed:
-				return []
+			return []
 		case let .loading(repositories):
-				return repositories.map(SearchFoundRepositoryDiffable.init)
+			return repositories.map(SearchFoundRepositoryDiffable.init)
 		case let .found(repositories):
 			return repositories.map(SearchFoundRepositoryDiffable.init)
 		case let .recent(repositories):
@@ -139,7 +139,10 @@ extension SearchViewController: ListAdapterDataSource {
 	}
 }
 
-extension SearchViewController: SearchFoundRepositoryListSectionControllerDelegate, SearchRecentRepositoryListSectionControllerDelegate {
+extension SearchViewController:
+	SearchFoundRepositoryListSectionControllerDelegate,
+	SearchRecentRepositoryListSectionControllerDelegate
+{
 	func didSelect(repository: Repository) {
 		presenter.didSelect(repository: repository)
 	}

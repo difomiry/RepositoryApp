@@ -1,7 +1,7 @@
 import AuthenticationServices
 import KeychainAccess
 
-fileprivate struct AccessTokenResponse {
+private struct AccessTokenResponse {
 	let token: String
 }
 
@@ -48,13 +48,13 @@ private extension AuthenticationManagerImpl {
 				url: url,
 				callbackURLScheme: nil
 			) { callbackURL, error in
-					guard
-						let callbackURL = callbackURL,
-						let components = URLComponents(url: callbackURL, resolvingAgainstBaseURL: true),
-						let code = components.queryItems?.first(where: { $0.name == "code" })?.value
-					else {
-						return continuation.resume(throwing: error ?? URLError(.badServerResponse))
-					}
+				guard
+					let callbackURL = callbackURL,
+					let components = URLComponents(url: callbackURL, resolvingAgainstBaseURL: true),
+					let code = components.queryItems?.first(where: { $0.name == "code" })?.value
+				else {
+					return continuation.resume(throwing: error ?? URLError(.badServerResponse))
+				}
 				continuation.resume(returning: code)
 			}
 			Task { @MainActor in

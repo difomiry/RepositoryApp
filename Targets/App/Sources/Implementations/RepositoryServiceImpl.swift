@@ -24,11 +24,13 @@ extension RepositoryServiceImpl: RepositoryService {
 			)
 		)
 		let response = try await apiManager.perform(request: request)
-		guard let url = URL(string: response.download_url) else {
+		guard let url = URL(string: response.downloadURL)
+		else {
 			throw URLError(.badURL)
 		}
 		let (data, _) = try await httpClient.data(for: URLRequest(url: url))
-		guard let string = String(data: data, encoding: .utf8) else {
+		guard let string = String(data: data, encoding: .utf8)
+		else {
 			throw URLError(.badServerResponse)
 		}
 		return string
@@ -40,5 +42,9 @@ extension RepositoryServiceImpl: RepositoryService {
 }
 
 private struct ReadmeResponse: Decodable {
-	let download_url: String
+	let downloadURL: String
+
+	enum CodingKeys: String, CodingKey {
+		case downloadURL = "download_url"
+	}
 }

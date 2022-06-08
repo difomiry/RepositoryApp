@@ -3,7 +3,7 @@ struct SearchResponse: Decodable {
 		case items
 		case isIncomplete = "incomplete_results"
 	}
-	
+
 	let items: [Repository]
 	let isIncomplete: Bool
 }

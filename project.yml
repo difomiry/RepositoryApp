@@ -16,6 +16,13 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: io.github.difomiry.RepositoryApp.App
         CURRENT_PROJECT_VERSION: 1
         MARKETING_VERSION: 1.0
+    preBuildScripts:
+      - path: Scripts/SwiftFormat.sh
+        name: SwiftFormat
+        basedOnDependencyAnalysis: false
+      - path: Scripts/SwiftLint.sh
+        name: SwiftLint
+        basedOnDependencyAnalysis: false
     dependencies:
       - package: SwiftDI
       - package: Markdownosaur

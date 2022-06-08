@@ -13,8 +13,8 @@ public class NSManagedRepository: NSManagedObject {
 	@NSManaged public var readme: String
 }
 
-extension NSManagedRepository {
-	public class func fetchRequest() -> NSFetchRequest<NSManagedRepository> {
+public extension NSManagedRepository {
+	class func fetchRequest() -> NSFetchRequest<NSManagedRepository> {
 		NSFetchRequest<NSManagedRepository>(entityName: "Repository")
 	}
 }

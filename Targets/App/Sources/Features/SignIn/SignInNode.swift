@@ -111,7 +111,7 @@ extension SignInNode: SignInView {
 	}
 
 	func show(error: Error) {
-		let alert = UIAlertController.init(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+		let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
 		alert.addAction(.init(title: "Ok", style: .default))
 		closestViewController?.present(alert, animated: true)
 	}

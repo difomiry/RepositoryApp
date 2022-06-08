@@ -1,7 +1,7 @@
-import SwiftDI
-import UIKit
 import CoreData
 import KeychainAccess
+import SwiftDI
+import UIKit
 
 struct RootDependency: SwiftDI.RootDependency {
 	let window: UIWindow

@@ -1,5 +1,5 @@
-import UIKit
 import AuthenticationServices
+import UIKit
 
 protocol AuthenticationCoordinatorDelegate: AnyObject {
 	func didFinishAuthentication()

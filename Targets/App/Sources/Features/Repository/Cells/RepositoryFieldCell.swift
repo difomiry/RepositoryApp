@@ -8,13 +8,9 @@ struct RepositoryFieldCellConfiguration {
 }
 
 final class RepositoryFieldCell: ASCellNode {
-	private lazy var name: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var name: ASTextNode = .init()
 
-	private lazy var value: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var value: ASTextNode = .init()
 
 	init(configuration: RepositoryFieldCellConfiguration) {
 		super.init()

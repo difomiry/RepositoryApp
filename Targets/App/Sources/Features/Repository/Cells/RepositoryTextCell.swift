@@ -8,13 +8,9 @@ struct RepositoryTextCellConfiguration {
 }
 
 final class RepositoryTextCell: ASCellNode {
-	private lazy var name: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var name: ASTextNode = .init()
 
-	private lazy var text: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var text: ASTextNode = .init()
 
 	init(configuration: RepositoryTextCellConfiguration) {
 		super.init()

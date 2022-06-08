@@ -17,14 +17,15 @@ extension HTTPClientImpl: HTTPClient {
 		} operation: {
 			try await withCheckedThrowingContinuation { continuation in
 				box.task = session.dataTask(with: request) { data, response, error in
-					guard let data = data, let response = response else {
+					guard let data = data, let response = response
+					else {
 						let error = error ?? URLError(.badServerResponse)
 						return continuation.resume(throwing: error)
 					}
 					continuation.resume(returning: (data, response))
 				}
 				box.task?.resume()
-		 }
+			}
 		}
 	}
 }

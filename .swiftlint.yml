@@ -1,0 +1,17 @@
+type_name:
+  min_length: 2
+  max_length: 60
+  excluded:
+    - ID
+
+colon:
+  flexible_right_spacing: true
+
+disabled_rules:
+  opening_brace
+
+function_parameter_count:
+  warning: 7
+
+excluded:
+  - Pods

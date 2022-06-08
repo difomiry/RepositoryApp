@@ -10,17 +10,11 @@ struct SearchRecentRepositoryCellConfiguration {
 }
 
 final class SearchRecentRepositoryCell: ASCellNode {
-	private lazy var name: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var name: ASTextNode = .init()
 
-	private lazy var desc: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var desc: ASTextNode = .init()
 
-	private lazy var language: ASTextNode = {
-		return ASTextNode()
-	}()
+	private lazy var language: ASTextNode = .init()
 
 	init(configuration: SearchRecentRepositoryCellConfiguration) {
 		super.init()

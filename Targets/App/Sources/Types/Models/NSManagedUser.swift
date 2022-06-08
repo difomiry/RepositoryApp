@@ -9,8 +9,8 @@ public class NSManagedUser: NSManagedObject {
 	@NSManaged public var following: Int
 }
 
-extension NSManagedUser {
-	public class func fetchRequest() -> NSFetchRequest<NSManagedUser> {
+public extension NSManagedUser {
+	class func fetchRequest() -> NSFetchRequest<NSManagedUser> {
 		NSFetchRequest<NSManagedUser>(entityName: "User")
 	}
 }

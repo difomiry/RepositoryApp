@@ -1,5 +1,5 @@
-import UIKit
 import SwiftDI
+import UIKit
 
 @main
 final class AppDelegate: UIResponder {
