@@ -1,5 +1,6 @@
 import API
 import Foundation
+import Storage
 
 final class RepositoryServiceImpl {
 	private let apiManager: APIManager

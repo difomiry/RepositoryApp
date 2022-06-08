@@ -2,6 +2,8 @@ name: RepositoryApp
 packages:
   API:
     path: Packages/API
+  Storage:
+    path: Packages/Storage
   SwiftDI:
     url: https://github.com/difomiry/SwiftDI
     branch: main
@@ -27,6 +29,7 @@ targets:
         basedOnDependencyAnalysis: false
     dependencies:
       - package: API
+      - package: Storage
       - package: SwiftDI
       - package: Markdownosaur
     sources:

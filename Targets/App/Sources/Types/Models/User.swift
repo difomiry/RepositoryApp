@@ -1,5 +1,6 @@
 import CoreData
 import Foundation
+import Storage
 
 struct User {
 	let id: Int
