@@ -1,6 +1,6 @@
 import Foundation
 
-protocol APIResponseMapper {
+public protocol APIResponseMapper {
 	func map<T>(
 		data: Data,
 		response: URLResponse

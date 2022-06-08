@@ -1,15 +1,15 @@
 import Foundation
 
-final class APIResponseMapperImpl {
+public final class APIResponseMapperImpl {
 	private let configurationProvider: APIConfigurationProvider
 
-	init(configurationProvider: APIConfigurationProvider) {
+	public init(configurationProvider: APIConfigurationProvider) {
 		self.configurationProvider = configurationProvider
 	}
 }
 
 extension APIResponseMapperImpl: APIResponseMapper {
-	func map<T>(
+	public func map<T>(
 		data: Data,
 		response: URLResponse
 	) async throws -> T where T: Decodable {

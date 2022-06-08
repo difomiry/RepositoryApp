@@ -1,15 +1,15 @@
 import Foundation
 
-final class HTTPClientImpl {
+public final class HTTPClientImpl {
 	private let session: URLSession
 
-	init(session: URLSession = .shared) {
+	public init(session: URLSession = .shared) {
 		self.session = session
 	}
 }
 
 extension HTTPClientImpl: HTTPClient {
-	func data(for request: URLRequest) async throws -> (Data, URLResponse) {
+	public func data(for request: URLRequest) async throws -> (Data, URLResponse) {
 		final class Box { var task: URLSessionTask? }
 		let box = Box()
 		return try await withTaskCancellationHandler {

@@ -1,12 +1,12 @@
 import Foundation
 
-struct APIRequest<Response> where Response: Decodable {
-	let method: String?
-	let components: URLComponents
-	let headers: [String: String]
-	let isAuthenticationRequired: Bool
+public struct APIRequest<Response> where Response: Decodable {
+	public let method: String?
+	public let components: URLComponents
+	public let headers: [String: String]
+	public let isAuthenticationRequired: Bool
 
-	init(
+	public init(
 		method: String? = nil,
 		components: URLComponents,
 		headers: [String: String] = [:],

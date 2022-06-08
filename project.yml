@@ -1,5 +1,7 @@
 name: RepositoryApp
 packages:
+  API:
+    path: Packages/API
   SwiftDI:
     url: https://github.com/difomiry/SwiftDI
     branch: main
@@ -24,6 +26,7 @@ targets:
         name: SwiftLint
         basedOnDependencyAnalysis: false
     dependencies:
+      - package: API
       - package: SwiftDI
       - package: Markdownosaur
     sources:

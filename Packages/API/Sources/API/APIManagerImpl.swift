@@ -1,11 +1,11 @@
 import Foundation
 
-final class APIManagerImpl {
+public final class APIManagerImpl {
 	private let httpClient: HTTPClient
 	private let requestBuilder: APIRequestBuilder
 	private let responseMapper: APIResponseMapper
 
-	init(
+	public init(
 		httpClient: HTTPClient,
 		requestBuilder: APIRequestBuilder,
 		responseMapper: APIResponseMapper
@@ -17,7 +17,7 @@ final class APIManagerImpl {
 }
 
 extension APIManagerImpl: APIManager {
-	func perform<T>(
+	public func perform<T>(
 		request: APIRequest<T>
 	) async throws -> T where T: Decodable {
 		let request = try await requestBuilder.build(for: request)
